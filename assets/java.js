@@ -10,11 +10,38 @@ var today = function() {
 }
 
 var createTask = function() {
-     
+    
 };
 
 var loadTasks = function() {
     today();
+    var container = document.getElementById("schedule")
+    for(i = 7; i < 19; i++) {
+        var hour = i
+        if (i > 12) {
+            hour = hour - 12 + "PM"
+        }
+        else if (i === 12){
+            hour = hour + "PM"
+        }
+        else {
+            hour = hour + "AM";
+        }
+        var html = `<div class="row mt-1">
+        <div class="col-1 col-lg-1 time-block hour">
+            ${hour}
+        </div>
+        <div class="col-10 col-lg-10">
+          <p id="day${i}" class="description">
+
+          </p>
+        </div>
+        <button id="saveBtn${i}" class="col-1 col-lg-1 saveBtn"><span class="oi oi-lock-locked"></span></button> 
+            
+      </div>`
+        container.insertAdjacentHTML("beforeend", html);
+    }
+
     // tasks = JSON.parse(localStorage.getItem("tasks"));
 
     // if (!tasks) {
@@ -78,8 +105,16 @@ $("div").on("blur", "textarea", function() {
     $(this).replaceWith(taskP);
 });
 
+$("[id^=save]").on("click", function () {
+    var id = this.id,
+        time = id.substr(id.length - 1);
+    var description = $("#day" + time).val();
+});
+
 loadTasks();
+
+
 
 setInterval(function() {
     today()
-}, (1000 * 60)*30);
+}, (1000 * 60)*5);

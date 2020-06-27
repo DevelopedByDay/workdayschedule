@@ -70,11 +70,11 @@ textarea{
   outline: none;
 }
 
-.saveBtn i:focus {
+.saveBtn:focus {
   outline: none;
 }
 
-.saveBtn i:hover {
+.saveBtn:hover {
   color: black;
   transition: all .3s ease-in-out;
 }
