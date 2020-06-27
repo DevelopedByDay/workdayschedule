@@ -54,13 +54,13 @@ $("div").on("click", "p", function() {
     $(this).replaceWith(textInput)
     textInput.trigger("focus")
     .attr("id", this.id)
-    .addClass("form-control")
+    .addClass("form-control description")
         .val(text)
         .text()
         .trim();
 })
 
-$("div").on("blur", "p", function() {
+$("div").on("blur", "textarea", function() {
     var text = $(this)
         .val()
         .trim();
