@@ -1,8 +1,3 @@
-var tasks = {};
-
-
-
-
 
 var today = function() {
     var area = $("#currentDay")
@@ -27,14 +22,13 @@ var loadTasks = function() {
         else {
             hour = hour + "AM";
         }
+        var task = localStorage.getItem(i) ?? '';
         var html = `<div class="row mt-1">
         <div class="col-1 col-lg-1 time-block hour">
             ${hour}
         </div>
         <div class="col-10 col-lg-10">
-          <p id="day${i}" class="description">
-
-          </p>
+          <p id="day${i}" class="description">${task}</p>
         </div>
         <button id="saveBtn${i}" class="col-1 col-lg-1 saveBtn"><span class="oi oi-lock-locked"></span></button> 
             
@@ -42,74 +36,42 @@ var loadTasks = function() {
         container.insertAdjacentHTML("beforeend", html);
     }
 
-    // tasks = JSON.parse(localStorage.getItem("tasks"));
-
-    // if (!tasks) {
-    //     tasks = {
-    //         sev: [],
-    //         eigh: [],
-    //         nine: [],
-    //         ten: [],
-    //         elev: [],
-    //         noon: [],
-    //         one: [],
-    //         two: [],
-    //         three: [],
-    //         four: [],
-    //         five: [],
-    //         six: [],
-    //     }
-    // }
-
-    // $.each(tasks, function(list,arr) {
-    //     arr.forEach(function(task) {
-    //         createTask(task.text);
-    //     });
-    // });
+    $("[id^=saveBtn]").on("click", function () {
+        var id = this.id,
+            time = id.replace(/\D/g, "");
+        var description = $("#day" + time).val();
+        saveTask(time, description);
+    });
 };
 
-var saveTasks = function() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+function saveTask(time, description) {
+    localStorage.setItem(time, description);
 }
 
 $("div").on("click", "p", function() {
-    var text = $(this)
+    var text = $(this).text()
     var textInput = $("<textarea>")
     $(this).replaceWith(textInput)
     textInput.trigger("focus")
+    .attr("id", this.id)
     .addClass("form-control")
         .val(text)
         .text()
         .trim();
 })
 
-$("div").on("blur", "textarea", function() {
+$("div").on("blur", "p", function() {
     var text = $(this)
         .val()
         .trim();
 
-    var status = $(this)
-    .closest("div")
-    .attr("id")
-
-    var index = $(this)
-    .closest("div")
-    .index();
-
-    tasks[status][index].text = text;
-    saveTasks();
-
     var taskP = $("<p>")
-        .addClass("m-1")
+        .attr("id", this.id)
+        .addClass("description")
         .text(text);
     $(this).replaceWith(taskP);
 });
 
-$("[id^=save]").on("click", function () {
-    var id = this.id,
-        time = id.substr(id.length - 1);
-    var description = $("#day" + time).val();
-});
 
 loadTasks();
 
