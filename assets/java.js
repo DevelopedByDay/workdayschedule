@@ -77,7 +77,7 @@ $("div").on("blur", "textarea", function() {
 });
 
 function timeCheck() {
-    var currentHour = moment().hour();
+    var currentHour = moment().hour()
     $(".mt-1").each(function(){
         var hourBlock = $(this).children(".time-block").text();
         var matches = hourBlock.match(/\d+/g);
