@@ -59,11 +59,19 @@ textarea{
 .present {
   background-color: #ff6961;
   color: white;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 
 .future {
   background-color: #77dd77;
   color: white;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 
 .saveBtn {

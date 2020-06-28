@@ -82,21 +82,28 @@ function timeCheck() {
         var hourBlock = $(this).children(".time-block").text();
         var matches = hourBlock.match(/\d+/g);
         var hourNumber = parseInt(matches);
-        if (currentHour < hourNumber) {
+        if (hourNumber < 7) {
+            var milHour = hourNumber + 12
+        }
+        else {
+            var milHour = hourNumber
+        }
+        if (currentHour < milHour) {
             $(this).addClass("future");
             $(this).removeClass("present");
             $(this).removeClass("past");
         }
-        else if (currentHour === hourNumber) {
+        else if (currentHour === milHour) {
             $(this).addClass("present");
             $(this).removeClass("past");
             $(this).removeClass("future");
         }
-        else if (currentHour > hourNumber) {
+        else if (currentHour > milHour) {
             $(this).addClass("past");
             $(this).removeClass("present");
             $(this).removeClass("future");
         }
+        
     })
 }
 
@@ -108,4 +115,4 @@ loadTasks();
 setInterval(function() {
     today();
     timeCheck()
-}, (1000 * 60)*5);
+}, (1000 * 60)*.10);
