@@ -27,7 +27,7 @@ var loadTasks = function() {
         <div class="col-1 col-lg-1 time-block hour">
             ${hour}
         </div>
-        <div class="col-10 col-lg-10">
+        <div class="col-10 col-lg-10" id="s${i}">
           <p id="day${i}" class="description">${task}</p>
         </div>
         <button id="saveBtn${i}" class="col-1 col-lg-1 saveBtn"><span class="oi oi-lock-locked"></span></button> 
@@ -35,17 +35,19 @@ var loadTasks = function() {
       </div>`
         container.insertAdjacentHTML("beforeend", html);
     }
+    timeCheck();
 
     $("[id^=saveBtn]").on("click", function () {
         var id = this.id,
             time = id.replace(/\D/g, "");
-        var description = $("#day" + time).val();
+        var description = $("#day" + time).html();
         saveTask(time, description);
     });
 };
 
 function saveTask(time, description) {
     localStorage.setItem(time, description);
+    // swap(swapper);
 }
 
 $("div").on("click", "p", function() {
@@ -60,6 +62,8 @@ $("div").on("click", "p", function() {
         .trim();
 })
 
+
+
 $("div").on("blur", "textarea", function() {
     var text = $(this)
         .val()
@@ -72,11 +76,36 @@ $("div").on("blur", "textarea", function() {
     $(this).replaceWith(taskP);
 });
 
+function timeCheck() {
+    var currentHour = moment().hour();
+    $(".mt-1").each(function(){
+        var hourBlock = $(this).children(".time-block").text();
+        var matches = hourBlock.match(/\d+/g);
+        var hourNumber = parseInt(matches);
+        if (currentHour < hourNumber) {
+            $(this).addClass("future");
+            $(this).removeClass("present");
+            $(this).removeClass("past");
+        }
+        else if (currentHour === hourNumber) {
+            $(this).addClass("present");
+            $(this).removeClass("past");
+            $(this).removeClass("future");
+        }
+        else if (currentHour > hourNumber) {
+            $(this).addClass("past");
+            $(this).removeClass("present");
+            $(this).removeClass("future");
+        }
+    })
+}
+
 
 loadTasks();
 
 
 
 setInterval(function() {
-    today()
+    today();
+    timeCheck()
 }, (1000 * 60)*5);
